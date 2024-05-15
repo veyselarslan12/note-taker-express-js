@@ -3,7 +3,7 @@ const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
 const dbPath = path.join(__dirname, "db", "db.json")
-// console.log(db)
+// console.log(dbPath)
 const PORT = process.env.port || 3001;
 const app = express();
 
@@ -16,7 +16,7 @@ const readNotes = () => {
 };
 
 const writeNotes = (notes) => {
-  fs.writeFileSync(dbPath, JSON.stringify(notes, null, 2));
+  fs.writeFileSync(dbPath, JSON.stringify(notes));
 };
 
 // HTML routes
