@@ -1,23 +1,17 @@
 const router = require("express").Router();
+const path = require('path')
 const { v4: uuidv4 } = require("uuid");
 const { readNotes, writeNotes } = require('../../utils/file-system')
+const dbPath = path.join(__dirname, "..", "..", "db", "db.json")
 
 
-// HTML routes
-router.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-app.get("/notes", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "notes.html"));
-});
 
 // API routes
-router.get("/api/notes", (req, res) => {
+router.get("/notes", (req, res) => {
   res.sendFile(dbPath);
 });
 
-router.post("/api/notes", (req, res) => {
+router.post("/notes", (req, res) => {
   const { title, text } = req.body;
   if (title && text) {
     const newNote = {
@@ -38,7 +32,7 @@ router.post("/api/notes", (req, res) => {
   }
 });
 
-router.delete("/api/notes/:id", (req, res) => {
+router.delete("/notes/:id", (req, res) => {
   const noteId = req.params.id;
   let notes = readNotes();
   const newNotes = notes.filter((note) => note.id !== noteId);
@@ -50,3 +44,5 @@ router.delete("/api/notes/:id", (req, res) => {
     res.json({ success: true });
   }
 });
+
+module.exports = router
