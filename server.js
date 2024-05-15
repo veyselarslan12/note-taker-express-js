@@ -2,7 +2,8 @@ const express = require("express");
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
-
+const db = path.join(__dirname, "db", "db.json")
+// console.log(db)
 const PORT = process.env.port || 3001;
 const app = express();
 
@@ -20,35 +21,17 @@ app.get("/notes", (req, res) => {
 
 // API routes
 app.get("/api/notes", (req, res) => {
-  fs.readFile("db.json", "utf8", (err, data) => {
-    if (err) {
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      const notes = JSON.parse(data);
-      res.json(notes);
-    }
-  });
+  res.sendFile(db)
 });
 
 app.post("/api/notes", (req, res) => {
-  const newNote = req.body;
-  newNote.id = uuidv4(); // Generate a unique ID for the note
-  fs.readFile("db.json", "utf8", (err, data) => {
-    if (err) {
-      res.status(500).json({ error: "Internal Server Error" });
-    } else {
-      const notes = JSON.parse(data);
-      notes.push(newNote);
-      fs.writeFile("db.json", JSON.stringify(notes), (err) => {
-        if (err) {
-          res.status(500).json({ error: "Internal Server Error" });
-        } else {
-          res.json(newNote);
-        }
-      });
-    }
-  });
+
+
 });
+
+
+
+
 
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT}`)
